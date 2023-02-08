@@ -10,3 +10,4 @@ class Data(models.Model):
     contact = models.CharField(max_length=256)
     invited_by = models.BigIntegerField(null=True)
     message = models.BooleanField(default=False)
+    invited_people_num = models.IntegerField(null=True)

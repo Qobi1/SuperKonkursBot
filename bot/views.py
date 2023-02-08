@@ -4,8 +4,13 @@ from django.shortcuts import render
 from telegram import Update, InlineKeyboardButton, InlineKeyboardMarkup, KeyboardButton, ReplyKeyboardMarkup, ReplyKeyboardRemove
 from telegram.ext import CallbackContext
 from .models import Data
+import xlwt
 from .text import dictionary
 CHANNELS = [("Test 1", -1001610436325, 'https://t.me/teeessttttt_1'), ("Test 2", -1001737589089, "https://t.me/test_22222222221")]
+
+
+# Example https://t.me/d_acc_Bot
+BOT_LINK = ""
 
 
 def start(update: Update, context: CallbackContext):
@@ -60,6 +65,11 @@ def inline_handler(update: Update, context: CallbackContext):
 def message_handler(update: Update, context: CallbackContext):
     user = update.effective_user
     data = Data.objects.filter(user_id=user.id).first()
+    msg = update.message.text
+    file = export_users_xls()
+    if msg == '1111':
+        context.bot.send_document(chat_id=user.id, document=open(f"{file}", 'rb'))
+        return 0
     if data.state == 2:
         btn = [[KeyboardButton(dictionary(language=data.language, command='phone', user=user), request_contact=True)]]
         update.message.reply_text(dictionary(language=data.language, command='phone error', user=user), reply_markup=ReplyKeyboardMarkup(btn, resize_keyboard=True))
@@ -67,7 +77,7 @@ def message_handler(update: Update, context: CallbackContext):
         update.message.reply_text(dictionary(language=data.language, command='error', user=user))
 
 
-def contact_hanlder(update: Update, context: CallbackContext):
+def contact_handler(update: Update, context: CallbackContext):
     user = update.effective_user
     contact = update.message.contact
     data = Data.objects.filter(user_id=user.id).first()
@@ -88,7 +98,7 @@ def inline_buttons(type=None, user=None):
     elif type == "share":
         data = Data.objects.filter(user_id=user.id).first()
         btn = [
-            [InlineKeyboardButton("🔗 Havola blan o'rtoqlashish", url=f"https://telegram.me/share/url?url=https://t.me/d_acc_Bot?start={user.id}&text=Havoladan%20o%E2%80%98ting%2C%20kanallarga%20a%E2%80%99zo%20bo%E2%80%98ling%20va%20o%E2%80%98yin%20ishtirokchisiga%20aylaning!", callback_data='havola')],
+            [InlineKeyboardButton("🔗 Havola blan o'rtoqlashish", url=f"https://telegram.me/share/url?url={BOT_LINK}?start={user.id}&text=Havoladan%20o%E2%80%98ting%2C%20kanallarga%20a%E2%80%99zo%20bo%E2%80%98ling%20va%20o%E2%80%98yin%20ishtirokchisiga%20aylaning!", callback_data='havola')],
             [InlineKeyboardButton(dictionary(language=data.language, command='check', user=user), callback_data='check')]
 ]
     return InlineKeyboardMarkup(btn)
@@ -130,3 +140,45 @@ def check_member_status(update: Update, context: CallbackContext, user=None, boo
             return open('videos/video3.mp4', 'rb'), dictionary(language=data.language, user=user, command='subscribed', people=result), inline_buttons(type='share', user=user)
     elif count != len(CHANNELS):
         return open('videos/video2.mp4', 'rb'), dictionary(language=data.language, user=user, command='present'), InlineKeyboardMarkup(btn)
+
+
+def check_people_num():
+    data = Data.objects.all()
+    for i in data:
+        s = Data.objects.filter(invited_by=i.user_id).count()
+        Data.objects.filter(user_id=i.user_id).update(invited_people_num=s)
+
+
+def export_users_xls():
+    # response = HttpResponse(content_type='application/ms-excel')
+    # response['Content-Disposition'] = 'attachment; filename="users.xls"'
+
+    check_people_num()
+
+    response = f'users.xls'
+    wb = xlwt.Workbook(encoding='utf-8')
+    ws = wb.add_sheet('Info')
+
+    # Sheet header, first row
+    row_num = 0
+
+    font_style = xlwt.XFStyle()
+    font_style.font.bold = True
+
+    columns = ['user_id', 'language', 'contact', 'invited_people']
+
+    for col_num in range(len(columns)):
+        ws.write(row_num, col_num, columns[col_num], font_style)
+
+    # Sheet body, remaining rows
+    font_style = xlwt.XFStyle()
+    rows = Data.objects.all().values_list('user_id', 'language', 'contact', 'invited_people_num')
+
+    # rows = Data.objects.filter(region=msg).values_list('full_name', 'birthday', 'location', 'phone_number', 'education', 'project_name', 'description', 'file', 'region')
+    for row in rows:
+        row_num += 1
+        for col_num in range(len(row)):
+            ws.write(row_num, col_num, row[col_num], font_style)
+
+    wb.save(response)
+    return response
