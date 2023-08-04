@@ -1,7 +1,7 @@
 from telegram.ext import CommandHandler, MessageHandler, Filters, CallbackQueryHandler, Updater
 from django.core.management import BaseCommand
 from bot.views import *
-TOKEN = ""
+TOKEN = "5028779716:AAHJIfeuX9nx0A5YwZuDsDCDKegBvNmUN5A"
 
 
 class Command(BaseCommand):
