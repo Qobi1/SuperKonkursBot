@@ -6,7 +6,7 @@ from telegram.ext import CallbackContext
 from .models import Data
 import xlwt
 from .text import dictionary
-CHANNELS = [("Test 1", -1001610436325, 'https://t.me/teeessttttt_1'), ("Test 2", -1001737589089, "https://t.me/test_22222222221")]
+CHANNELS = [("24/7 online", -1001780064445, 'https://t.me/online_24_7_kanal'), ("Siz buni bilarmidingiz?", -1001928509371, "https://t.me/siz_buni_blarmidingiz")]
 
 
 # Example https://t.me/d_acc_Bot
