@@ -10,7 +10,7 @@ CHANNELS = [("24/7 online", -1001780064445, 'https://t.me/online_24_7_kanal'), (
 
 
 # Example https://t.me/d_acc_Bot
-BOT_LINK = ""
+BOT_LINK = "https://t.me/con_curs_bot"
 
 
 def start(update: Update, context: CallbackContext):
