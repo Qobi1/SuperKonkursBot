@@ -12,7 +12,7 @@ def dictionary(language, command, people=None, user=None):
             "yourfriendsubscribed": f"""🎁 Sizning do'stingiz {user.first_name} tanlovning barcha shartlarini bajardi va sizning referalingizga aylandi""",
             'phone error': "Raqamni yuborish knopkasini bosing👇",
             "error": "Xatolik⚠",
-            'link_share': "🔗 Поделись ссылкой"
+            'link_share': "🔗 Havola blan o'rtoqlashish"
         },
         'rus':  {
             'start': "Вы узнаете ее голос среди тысяч других голосов 🥰\nМы официально объявляем о старте игры с удивительно красивым талантом Севарой Назархан 🎉🎊\nУчаствуйте и выигрывайте PlayStation 5 ваааааа… MacBook Air! 😎\nВсе условия игры вы найдете здесь:",
@@ -25,7 +25,7 @@ def dictionary(language, command, people=None, user=None):
             "yourfriendsubscribed": f"""🎁 Ваш друг {user.first_name} выполнил все условия конкурса и стал вашим рефералом""",
             'phone error': "Нажмите кнопку Отправить номер👇",
             "error": "Ошибка⚠",
-            'link_share:': "🔗 Havola blan o'rtoqlashish"
+            'link_share': "🔗 Поделись ссылкой"
         }
     }
     return dict[language][command]

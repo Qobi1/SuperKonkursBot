@@ -18,7 +18,6 @@ def start(update: Update, context: CallbackContext):
     msg = msg.split(' ')
     user = update.effective_user
     data = Data.objects.filter(user_id=user.id).first()
-
     if data is None:
         update.message.reply_text("🇺🇿 - Tilni tanlang!\n🇷🇺 - Выберите язык", reply_markup=inline_buttons(type='language'))
         if len(msg) == 1:
@@ -97,6 +96,7 @@ def inline_buttons(type=None, user=None):
         btn = [[InlineKeyboardButton('start', callback_data='start')]]
     elif type == "share":
         data = Data.objects.filter(user_id=user.id).first()
+        print(dictionary(language=data.language, command='link_share', user=user))
         btn = [
             [InlineKeyboardButton(dictionary(language=data.language, command='link_share', user=user), url=f"https://telegram.me/share/url?url={BOT_LINK}?start={user.id}&text=Havoladan%20o%E2%80%98ting%2C%20kanallarga%20a%E2%80%99zo%20bo%E2%80%98ling%20va%20o%E2%80%98yin%20ishtirokchisiga%20aylaning!", callback_data='havola')],
             [InlineKeyboardButton(dictionary(language=data.language, command='check', user=user), callback_data='check')]
