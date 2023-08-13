@@ -26,7 +26,7 @@ def start(update: Update, context: CallbackContext):
         elif len(msg) == 2:
             Data.objects.create(user_id=user.id, state=1, invited_by=msg[1]).save()
 
-    elif data is not None:
+    elif (data and data.contact) is not None:
         try:
             context.bot.send_video(chat_id=user.id, video=open("videos/video1.mp4", 'rb'), supports_streaming=True,
                                caption=dictionary(language=data.language, command='start', user=user),
@@ -98,7 +98,7 @@ def inline_buttons(type=None, user=None):
     elif type == "share":
         data = Data.objects.filter(user_id=user.id).first()
         btn = [
-            [InlineKeyboardButton(dictionary(language=data.language, command='link_share', user=user), url=f"https://telegram.me/share/url?url={BOT_LINK}?start={user.id}&text=Havoladan%20o%E2%80%98ting%2C%20kanallarga%20a%E2%80%99zo%20bo%E2%80%98ling%20va%20o%E2%80%98yin%20ishtirokchisiga%20aylaning!", callback_data='havola')],
+            [InlineKeyboardButton(dictionary(language=data.language, command='link_share'), url=f"https://telegram.me/share/url?url={BOT_LINK}?start={user.id}&text=Havoladan%20o%E2%80%98ting%2C%20kanallarga%20a%E2%80%99zo%20bo%E2%80%98ling%20va%20o%E2%80%98yin%20ishtirokchisiga%20aylaning!", callback_data='havola')],
             [InlineKeyboardButton(dictionary(language=data.language, command='check', user=user), callback_data='check')]
 ]
     return InlineKeyboardMarkup(btn)
