@@ -11,7 +11,8 @@ def dictionary(language, command, people=None, user=None):
             'phone text': """Ro'yhatdan o'tish uchun o'z telefon raqamingizni +998xxxxxxxxx formatda yuboring yoki "📞 Raqamni yuborish" tugmasini bosing""",
             "yourfriendsubscribed": f"""🎁 Sizning do'stingiz {user.first_name} tanlovning barcha shartlarini bajardi va sizning referalingizga aylandi""",
             'phone error': "Raqamni yuborish knopkasini bosing👇",
-            "error": "Xatolik⚠"
+            "error": "Xatolik⚠",
+            'link_share': "🔗 Поделись ссылкой"
         },
         'rus':  {
             'start': "Вы узнаете ее голос среди тысяч других голосов 🥰\nМы официально объявляем о старте игры с удивительно красивым талантом Севарой Назархан 🎉🎊\nУчаствуйте и выигрывайте PlayStation 5 ваааааа… MacBook Air! 😎\nВсе условия игры вы найдете здесь:",
@@ -23,7 +24,8 @@ def dictionary(language, command, people=None, user=None):
             "phone text": """Для регистрации отправьте свой номер телефона в формате +998xxxxxxxxx или нажмите кнопку "📞 Отправить номер" """,
             "yourfriendsubscribed": f"""🎁 Ваш друг {user.first_name} выполнил все условия конкурса и стал вашим рефералом""",
             'phone error': "Нажмите кнопку Отправить номер👇",
-            "error": "Ошибка⚠"
+            "error": "Ошибка⚠",
+            'link_share:': "🔗 Havola blan o'rtoqlashish"
         }
     }
     return dict[language][command]
