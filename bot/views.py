@@ -110,7 +110,7 @@ def check_member_status(update: Update, context: CallbackContext, user=None, boo
     data = Data.objects.filter(user_id=user.id).first()
     for i in CHANNELS:
         channel = context.bot.getChatMember(user_id=user.id, chat_id=i[1])
-        if channel['status'] not in ['member', 'creator']:
+        if channel['status'] not in ['member', 'creator', 'administrator']:
             btn.append([InlineKeyboardButton(i[0], callback_data=f"{i[1]}", url=i[2])])
         else:
             btn.append([InlineKeyboardButton(f"✅{i[0]}", callback_data=f"{i[1]}", url=f'{i[2]}')])
@@ -127,7 +127,7 @@ def check_member_status(update: Update, context: CallbackContext, user=None, boo
                 for j in CHANNELS:
                     try:
                         channel = context.bot.getChatMember(user_id=i['user_id'], chat_id=j[1])
-                        if channel['status'] in ['member', 'creator']:
+                        if channel['status'] in ['member', 'creator', 'administrator']:
                            number += 1
                     except telegram.error.BadRequest:
                         pass
