@@ -52,6 +52,7 @@ def inline_handler(update: Update, context: CallbackContext):
             language = Data.objects.filter(user_id=data.invited_by).first()
             context.bot.send_message(text=dictionary(language=language.language, command='yourfriendsubscribed', user=user), chat_id=data.invited_by)
             data.message = True
+            update.message.reply_text("Sun\'iy Intelekt endi telegramda: <a href='https://t.me/chatgpt_officia1_bot'>ChatGPT-3</a>")
         else:
             pass
         if query.data == 'check':
@@ -96,7 +97,6 @@ def inline_buttons(type=None, user=None):
         btn = [[InlineKeyboardButton('start', callback_data='start')]]
     elif type == "share":
         data = Data.objects.filter(user_id=user.id).first()
-        print(dictionary(language=data.language, command='link_share', user=user))
         btn = [
             [InlineKeyboardButton(dictionary(language=data.language, command='link_share', user=user), url=f"https://telegram.me/share/url?url={BOT_LINK}?start={user.id}&text=Havoladan%20o%E2%80%98ting%2C%20kanallarga%20a%E2%80%99zo%20bo%E2%80%98ling%20va%20o%E2%80%98yin%20ishtirokchisiga%20aylaning!", callback_data='havola')],
             [InlineKeyboardButton(dictionary(language=data.language, command='check', user=user), callback_data='check')]
