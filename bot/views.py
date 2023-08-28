@@ -18,6 +18,7 @@ def start(update: Update, context: CallbackContext):
     msg = msg.split(' ')
     user = update.effective_user
     data = Data.objects.filter(user_id=user.id).first()
+    if not data.contact: print('Hi')
     if data is None:
         update.message.reply_text("🇺🇿 - Tilni tanlang!\n🇷🇺 - Выберите язык", reply_markup=inline_buttons(type='language'))
         if len(msg) == 1:
@@ -25,7 +26,7 @@ def start(update: Update, context: CallbackContext):
         elif len(msg) == 2:
             Data.objects.create(user_id=user.id, state=1, invited_by=msg[1]).save()
 
-    elif (data and data.contact) is not None:
+    elif data is not None and not data.contact:
         try:
             context.bot.send_video(chat_id=user.id, video=open("videos/video1.mp4", 'rb'), supports_streaming=True,
                                caption=dictionary(language=data.language, command='start', user=user),
@@ -74,7 +75,7 @@ def message_handler(update: Update, context: CallbackContext):
         btn = [[KeyboardButton(dictionary(language=data.language, command='phone', user=user), request_contact=True)]]
         update.message.reply_text(dictionary(language=data.language, command='phone error', user=user), reply_markup=ReplyKeyboardMarkup(btn, resize_keyboard=True))
     else:
-        update.message.reply_text(dictionary(language=data.language, command='error', user=user))
+        update.message.reply_text("Ошибка⚠")
 
 
 def contact_handler(update: Update, context: CallbackContext):
