@@ -7,7 +7,7 @@ class Data(models.Model):
     user_id = models.BigIntegerField(null=True)
     language = models.CharField(max_length=256, null=True)
     state = models.IntegerField(null=True)
-    contact = models.CharField(max_length=256)
+    contact = models.CharField(max_length=256, null=True)
     invited_by = models.BigIntegerField(null=True)
     message = models.BooleanField(default=False)
     invited_people_num = models.IntegerField(null=True)

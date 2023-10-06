@@ -18,21 +18,27 @@ def start(update: Update, context: CallbackContext):
     msg = msg.split(' ')
     user = update.effective_user
     data = Data.objects.filter(user_id=user.id).first()
-    if not data.contact: print('Hi')
     if data is None:
         update.message.reply_text("🇺🇿 - Tilni tanlang!\n🇷🇺 - Выберите язык", reply_markup=inline_buttons(type='language'))
         if len(msg) == 1:
             Data.objects.create(user_id=user.id, state=1).save()
         elif len(msg) == 2:
             Data.objects.create(user_id=user.id, state=1, invited_by=msg[1]).save()
-
-    elif data is not None and not data.contact:
+        return 0
+    elif data.contact is not None and data is not None:
         try:
             context.bot.send_video(chat_id=user.id, video=open("videos/video1.mp4", 'rb'), supports_streaming=True,
                                caption=dictionary(language=data.language, command='start', user=user),
                                reply_markup=inline_buttons(type='start'))
             data.state = 3
             data.save()
+        except KeyError:
+            update.message.reply_text("🇺🇿 - Tilni tanlang!\n🇷🇺 - Выберите язык", reply_markup=inline_buttons(type='language'))
+    elif data.contact is None:
+        try:
+            btn = [[KeyboardButton(dictionary(language=data.language, command='phone', user=user), request_contact=True)]]
+            update.message.reply_text(dictionary(language=data.language, command='phone text', user=user),
+                                     reply_markup=ReplyKeyboardMarkup(btn, resize_keyboard=True))
         except KeyError:
             update.message.reply_text("🇺🇿 - Tilni tanlang!\n🇷🇺 - Выберите язык", reply_markup=inline_buttons(type='language'))
 
@@ -53,13 +59,16 @@ def inline_handler(update: Update, context: CallbackContext):
             language = Data.objects.filter(user_id=data.invited_by).first()
             context.bot.send_message(text=dictionary(language=language.language, command='yourfriendsubscribed', user=user), chat_id=data.invited_by)
             data.message = True
-            update.message.reply_text("Sun\'iy Intelekt endi telegramda: <a href='https://t.me/chatgpt_officia1_bot'>ChatGPT-3</a>")
         else:
             pass
         if query.data == 'check':
             query.delete_message()
         check_status = check_member_status(update, context, user)
         context.bot.send_video(chat_id=user.id, video=check_status[0], caption=check_status[1], reply_markup=check_status[2], timeout=100000)
+        update.callback_query.message.reply_text(
+            "Sun\'iy Intelekt endi telegramda: <a href='https://t.me/chatgpt_officia1_bot'>ChatGPT-3</a>",
+            parse_mode='HTML')
+
     data.save()
 
 
