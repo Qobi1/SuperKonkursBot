@@ -77,7 +77,7 @@ def message_handler(update: Update, context: CallbackContext):
     data = Data.objects.filter(user_id=user.id).first()
     msg = update.message.text
     file = export_users_xls()
-    if msg == '1111':
+    if msg == 'excel':
         context.bot.send_document(chat_id=user.id, document=open(f"{file}", 'rb'))
         return 0
     if data.state == 2:
